@@ -1,10 +1,11 @@
 package com.examly.springapp.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "reviews")
-public class review {  // Renamed to follow PascalCase
+public class review {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,8 +16,10 @@ public class review {  // Renamed to follow PascalCase
     private int rating;
 
     @ManyToOne
-    @JoinColumn(name = "repair_shop_id", nullable = false)  
+@JoinColumn(name = "repair_shop_id", nullable = false)
+    @JsonBackReference
     private repairshop repairShop;
+
 
     // Getters and Setters
     public Long getId() {

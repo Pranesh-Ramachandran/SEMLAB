@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-@Service // Ensure this annotation is present
+@Service 
 public class ServiceService {
 
     private final ServiceRepository serviceRepository;
@@ -45,7 +45,7 @@ public class ServiceService {
             existingService.setPrice(updatedServiceEntity.getPrice());
             return serviceRepository.save(existingService);
         }
-        return null; // Service not found
+        return null; 
     }
 
     public void deleteService(Long id) {

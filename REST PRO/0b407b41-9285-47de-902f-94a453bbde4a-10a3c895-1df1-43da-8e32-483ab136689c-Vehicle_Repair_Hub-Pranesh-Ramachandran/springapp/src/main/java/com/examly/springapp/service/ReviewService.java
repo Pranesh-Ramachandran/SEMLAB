@@ -19,7 +19,7 @@ public class ReviewService {
     @Autowired
     private repairshoprepo repairShopRepository;
 
-    // Add a review for a repair shop
+    
     public review addReview(Long repairShopId, review review) {
         Optional<repairshop> repairShop = repairShopRepository.findById(repairShopId);
         if (repairShop.isPresent()) {
@@ -29,22 +29,21 @@ public class ReviewService {
         return null;
     }
 
-    // Get reviews for a repair shop
+    
     public List<review> getReviewsByRepairShop(Long repairShopId) {
         return reviewRepository.findByRepairShopId(repairShopId);
     }
 
-    // Get a review by ID
     public review getReviewById(Long id) {
         return reviewRepository.findById(id).orElse(null);
     }
 
-    // Get all reviews
+ 
     public List<review> getAllReviews() {
         return reviewRepository.findAll();
     }
 
-    // Update an existing review
+   
     public review updateReview(Long id, review updatedReview) {
         if (reviewRepository.existsById(id)) {
             updatedReview.setId(id);
@@ -53,7 +52,7 @@ public class ReviewService {
         return null;
     }
 
-    // Delete a review
+   
     public boolean deleteReview(Long id) {
         if (reviewRepository.existsById(id)) {
             reviewRepository.deleteById(id);

@@ -7,17 +7,33 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import com.examly.springapp.repository.AppointmentRepository;
-import com.examly.springapp.repository.UserRepository;
+
 import com.examly.springapp.entity.Appointment;
 import com.examly.springapp.entity.User;
+import com.examly.springapp.repository.AppointmentRepository;
+import com.examly.springapp.repository.UserRepository;
 
 @Service
 @RequiredArgsConstructor
 public class AppointmentServiceImpl implements AppointmentService {
+
+    private final AppointmentRepository appointmentRepository;
+    private final UserRepository userRepository;
+
+    @Override
+    public Appointment createAppointment(Appointment appointment) {
+        return appointmentRepository.save(appointment);
+    }
+
     @Override
     public Appointment getAppointmentById(Integer id) {
         return appointmentRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Appointment with ID " + id + " not found"));
+    }
+
+    @Override
+    public Appointment getAppointmentById(Long id) {
+        return appointmentRepository.findById(id.intValue())
                 .orElseThrow(() -> new EntityNotFoundException("Appointment with ID " + id + " not found"));
     }
 
@@ -27,15 +43,45 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
+    public List<Appointment> getAllAppointments() {
+        return appointmentRepository.findAll();
+    }
+
+    @Override
+    public List<Appointment> getAllAppointmentsList() {
+        return appointmentRepository.findAll();
+    }
+
+    @Override
+    public List<Appointment> getAppointmentsByUserId(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User with ID " + userId + " not found"));
+        return appointmentRepository.findByUser(user);
+    }
+
+    @Override
     public Appointment updateAppointment(Integer id, Appointment updatedAppointment) {
         Appointment existingAppointment = appointmentRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Appointment with ID " + id + " not found"));
-    
+
         existingAppointment.setRepairShop(updatedAppointment.getRepairShop());
         existingAppointment.setAppointmentDate(updatedAppointment.getAppointmentDate());
         existingAppointment.setServiceRequested(updatedAppointment.getServiceRequested());
         existingAppointment.setStatus(updatedAppointment.getStatus());
-    
+
+        return appointmentRepository.save(existingAppointment);
+    }
+
+    @Override
+    public Appointment updateAppointment(Long id, Appointment updatedAppointment) {
+        Appointment existingAppointment = appointmentRepository.findById(id.intValue())
+                .orElseThrow(() -> new EntityNotFoundException("Appointment with ID " + id + " not found"));
+
+        existingAppointment.setRepairShop(updatedAppointment.getRepairShop());
+        existingAppointment.setAppointmentDate(updatedAppointment.getAppointmentDate());
+        existingAppointment.setServiceRequested(updatedAppointment.getServiceRequested());
+        existingAppointment.setStatus(updatedAppointment.getStatus());
+
         return appointmentRepository.save(existingAppointment);
     }
 
@@ -48,54 +94,6 @@ public class AppointmentServiceImpl implements AppointmentService {
         return true;
     }
 
-    private final AppointmentRepository appointmentRepository;
-    private final UserRepository userRepository;
-
-    @Override
-    public List<Appointment> getAllAppointments() {
-        return appointmentRepository.findAll();
-    }
-
-    public List<Appointment> getAllAppointmentsList() {
-        return appointmentRepository.findAll();
-    }
-
-    @Override
-    public Appointment getAppointmentById(Long id) {
-        return appointmentRepository.findById(id.intValue())
-                .orElseThrow(() -> new EntityNotFoundException("Appointment with ID " + id + " not found"));
-    }
-
-    @Override
-    public Appointment createAppointment(Appointment appointment, Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("User with ID " + userId + " not found"));
-        
-        appointment.setUser(user);
-        return appointmentRepository.save(appointment);
-    }
-
-    @Override
-    public List<Appointment> getAppointmentsByUserId(Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("User with ID " + userId + " not found"));
-        return appointmentRepository.findByUser(user);
-    }
-
-    @Override
-    public Appointment updateAppointment(Long id, Appointment updatedAppointment) {
-        Appointment existingAppointment = appointmentRepository.findById(id.intValue())
-                .orElseThrow(() -> new EntityNotFoundException("Appointment with ID " + id + " not found"));
-    
-        existingAppointment.setRepairShop(updatedAppointment.getRepairShop());
-        existingAppointment.setAppointmentDate(updatedAppointment.getAppointmentDate());
-        existingAppointment.setServiceRequested(updatedAppointment.getServiceRequested());
-        existingAppointment.setStatus(updatedAppointment.getStatus());
-    
-        return appointmentRepository.save(existingAppointment);
-    }
-
-  
     @Override
     public boolean deleteAppointment(Long id) {
         if (!appointmentRepository.existsById(id.intValue())) {

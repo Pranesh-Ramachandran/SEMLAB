@@ -1,15 +1,12 @@
 package com.examly.springapp.repository;
-
-import com.examly.springapp.entity.repairshop; // Corrected entity name
+import com.examly.springapp.entity.repairshop;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-
 import java.util.List;
 import java.util.Optional;
-
 @Repository
-public interface repairshoprepo extends JpaRepository<repairshop, Long> { // Fixed naming
+public interface repairshoprepo extends JpaRepository<repairshop, Long> { 
 
    
     @Query("SELECT r FROM repairshop r WHERE r.name = ?1")

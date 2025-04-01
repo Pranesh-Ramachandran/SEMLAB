@@ -1,7 +1,10 @@
 package com.examly.springapp.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDate;
 
@@ -11,53 +14,34 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name = "appointments")
 @Getter
 @Setter
-
+@NoArgsConstructor
+@AllArgsConstructor
 public class Appointment {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    @JsonIgnore 
-    private User user; 
-
-    @ManyToOne
-    @JoinColumn(name = "repair_shop_id", nullable = false)
-    private String repairshop;  // Changed from String to RepairShop
+    private Long id;
 
     private LocalDate appointmentDate;
     private String serviceRequested;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status")
     private AppointmentStatus status;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore
+    private User user;
 
-    
-    public int getId() {
+    @ManyToOne
+    @JoinColumn(name = "repair_shop_id", nullable = false)
+    private repairshop repairShop;  
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public String getRepairShop() {
-        return repairshop;
-    }
-
-    public void setRepairShop(String repairShop) {
-        this.repairshop = repairShop;
     }
 
     public LocalDate getAppointmentDate() {
@@ -82,5 +66,21 @@ public class Appointment {
 
     public void setStatus(AppointmentStatus status) {
         this.status = status;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public repairshop getRepairShop() {
+        return repairShop;
+    }
+
+    public void setRepairShop(repairshop repairShop) {
+        this.repairShop = repairShop;
     }
 }

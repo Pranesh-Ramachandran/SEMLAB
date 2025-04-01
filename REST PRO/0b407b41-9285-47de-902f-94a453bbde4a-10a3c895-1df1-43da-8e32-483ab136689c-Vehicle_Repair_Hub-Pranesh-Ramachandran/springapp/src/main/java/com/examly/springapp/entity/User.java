@@ -3,12 +3,12 @@ package com.examly.springapp.entity;
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "users")
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,9 +21,10 @@ public class User {
     private String address;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore  // Prevents infinite recursion during JSON serialization
+    @JsonIgnore
     private List<Appointment> appointments = new ArrayList<>();
 
+    // --- Getters and Setters ---
     public Long getId() {
         return id;
     }
@@ -93,7 +94,7 @@ public class User {
             }
         }
     }
-    
+
     public void addAppointment(Appointment appointment) {
         if (appointment != null) {
             this.appointments.add(appointment);
@@ -106,10 +107,5 @@ public class User {
             this.appointments.remove(appointment);
             appointment.setUser(null);
         }
-    }
-
-    public void setId(int id2) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setId'");
     }
 }

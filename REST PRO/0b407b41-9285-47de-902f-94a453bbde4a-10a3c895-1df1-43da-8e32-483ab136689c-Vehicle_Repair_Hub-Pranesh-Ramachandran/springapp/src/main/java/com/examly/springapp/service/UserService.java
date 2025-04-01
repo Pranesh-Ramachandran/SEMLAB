@@ -1,4 +1,3 @@
-
 package com.examly.springapp.service;
 
 import com.examly.springapp.entity.User;
@@ -22,7 +21,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User getUserById(int id) {
+    public User getUserById(Long id) {
         return userRepository.findById(id).orElse(null);
     }
 
@@ -30,16 +29,16 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User updateUser(int id, User updatedUser) {
+    public User updateUser(Long id, User updatedUser) {
         Optional<User> existingUser = userRepository.findById(id);
         if (existingUser.isPresent()) {
-            updatedUser.setId(id); // Ensure ID consistency
+            updatedUser.setId(id); 
             return userRepository.save(updatedUser);
         }
         return null;
     }
 
-    public boolean deleteUser(int id) {
+    public boolean deleteUser(Long id) {
         if (userRepository.existsById(id)) {
             userRepository.deleteById(id);
             return true;
@@ -55,4 +54,3 @@ public class UserService {
         return userRepository.findAll(PageRequest.of(page, size, Sort.by(field)));
     }
 }
-

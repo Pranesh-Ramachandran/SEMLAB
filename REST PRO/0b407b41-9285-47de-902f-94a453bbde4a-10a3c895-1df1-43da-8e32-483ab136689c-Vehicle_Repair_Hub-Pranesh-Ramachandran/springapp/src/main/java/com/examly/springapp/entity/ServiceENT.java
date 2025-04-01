@@ -1,30 +1,40 @@
 package com.examly.springapp.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "services")
+@Getter
+@Setter
 public class ServiceENT {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", nullable = false, unique = true)
+    @Column(nullable = false)
     private String name;
 
-    @Column(name = "description")
     private String description;
 
-    @Column(name = "price", nullable = false)
+    @Column(nullable = false)
     private double price;
+
+    @ManyToOne
+    @JoinColumn(name = "repair_shop_id", referencedColumnName = "id")
+    @JsonBackReference
+private repairshop repairShop;
 
     public ServiceENT() {}
 
-    public ServiceENT(String name, String description, double price) {
+    public ServiceENT(String name, String description, double price, repairshop repairShop) {
         this.name = name;
         this.description = description;
         this.price = price;
+        this.repairShop = repairShop;
     }
 
     public Long getId() {

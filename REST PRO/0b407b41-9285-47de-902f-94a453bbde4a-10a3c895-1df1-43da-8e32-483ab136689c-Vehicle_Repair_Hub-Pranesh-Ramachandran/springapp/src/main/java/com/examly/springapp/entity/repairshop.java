@@ -1,11 +1,16 @@
 package com.examly.springapp.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.util.List;
 
 @Entity
 @Table(name = "repair_shops")
-public class repairshop {  // Corrected PascalCase
+@Getter
+@Setter
+public class repairshop{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +28,14 @@ public class repairshop {  // Corrected PascalCase
     private List<String> maintenanceTips;
 
     @OneToMany(mappedBy = "repairShop", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<review> reviews;  // Changed `review` to `Review` (PascalCase)
+    @JsonManagedReference
+    private List<review> reviews;
+
+    @OneToMany(mappedBy = "repairShop", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<ServiceENT> availableServices;
+
+
 
     public Long getId() {
         return id;

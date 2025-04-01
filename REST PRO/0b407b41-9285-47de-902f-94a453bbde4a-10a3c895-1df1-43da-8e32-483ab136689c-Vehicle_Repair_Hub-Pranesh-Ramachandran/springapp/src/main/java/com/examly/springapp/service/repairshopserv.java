@@ -14,52 +14,37 @@ public class repairshopserv {
     @Autowired
     private repairshoprepo repairShopRepo;
 
-    // Create a new repair shop
+   
     public repairshop createRepairShop(repairshop repairShop) {
         return repairShopRepo.save(repairShop);
     }
 
-    // Get a repair shop by ID
-    public repairshop getRepairShopById(Long id) { // Change int to Long
+   
+    public repairshop getRepairShopById(Long id) {
         Optional<repairshop> repairShop = repairShopRepo.findById(id);
         return repairShop.orElse(null);
     }
 
-    // Get all repair shops
     public List<repairshop> getAllRepairShops() {
         return repairShopRepo.findAll();
     }
 
-    // Update an existing repair shop
-    public repairshop updateRepairShop(Long id, repairshop updatedShop) { // Change int to Long
-        if (repairShopRepo.existsById(id)) {
-            updatedShop.setId(id); // Ensure the ID stays the same
+   
+    public repairshop updateRepairShop(Long id, repairshop updatedShop) {
+        Optional<repairshop> existingShop = repairShopRepo.findById(id);
+        if (existingShop.isPresent()) {
+            updatedShop.setId(id); 
             return repairShopRepo.save(updatedShop);
         }
         return null;
     }
 
-    // Delete a repair shop
-    public boolean deleteRepairShop(Long id) { // Change int to Long
+    
+    public boolean deleteRepairShop(Long id) {
         if (repairShopRepo.existsById(id)) {
             repairShopRepo.deleteById(id);
             return true;
         }
         return false;
-    }
-
-    public repairshop getRepairShopById(int id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getRepairShopById'");
-    }
-
-    public repairshop updateRepairShop(int id, repairshop updatedShop) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updateRepairShop'");
-    }
-
-    public boolean deleteRepairShop(int id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteRepairShop'");
     }
 }
